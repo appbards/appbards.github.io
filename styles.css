@@ -1,0 +1,55 @@
+body{
+    height: 100vh;
+    width: 100vh;
+     margin: 0;
+        padding: 0;
+    background: rgb(42,35,78);
+    background: linear-gradient(30deg, rgba(42,35,78,1) 0%, rgba(254,128,182,1) 100%);
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    text-align: center; /* Center text within the body */
+}
+
+header {
+    color: #fff;
+    padding: 10px;
+    text-align: right;
+}
+header a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px; /* Add some spacing between the links */
+    margin-right:10px;
+    font-size: 1em;
+}
+
+header .left-text {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 2em;
+}
+
+.center-text {
+    font-size: 24px;
+    color: #333; /* Set your desired text color */
+}
+table{
+  border-collapse: collapse;
+    width:100%;
+}
+td, th{
+    border:0px solid;
+    width:50%;
+    margin-bottom:20px;
+}
+th{
+    padding-bottom: 10px;
+}
+td img, td p {
+            vertical-align: middle;
+        }
+
+.application-link{
+ color: #fff;
+    text-decoration: none;
+}
