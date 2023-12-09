@@ -1,10 +1,11 @@
 body{
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
      margin: 0;
         padding: 0;
     background: rgb(42,35,78);
-    background: linear-gradient(30deg, rgba(42,35,78,1) 0%, rgba(254,128,182,1) 100%);
+    /*background: linear-gradient(30deg, rgba(42,35,78,1) 0%, rgba(254,128,182,1) 100%);*/
+    background: linear-gradient(30deg, rgba(106, 95, 161) 0%, rgba(254,128,182,1) 100%);
     align-items: center; /* Vertical centering */
     justify-content: center; /* Horizontal centering */
     text-align: center; /* Center text within the body */
@@ -52,4 +53,28 @@ td img, td p {
 .application-link{
  color: #fff;
     text-decoration: none;
+}
+.pp-section{
+    padding:20px;
+}
+.pp-title {
+    text-align: left;
+    width:100%;
+    color: #333;
+    text-decoration: underline;
+}
+.pp-h4{
+    text-align: left;
+    width:100%;
+    color: #333;
+}
+.pp-h2{
+    text-align: left;
+    width:100%;
+    color: #333;
+}
+.pp-h3{
+    text-align: left;
+    width:100%;
+    color: #333;
 }
