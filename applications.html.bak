@@ -18,23 +18,33 @@
     </header>
     <main>
        <table class="app-table">
+            <colgroup>
+                <col>
+                <col>
+                <col>
+            </colgroup>
             <tr>
                 <td class="subtitle">Google Play</td>
                 <td class="subtitle"></td>
                 <td class="subtitle">App Store</td>
             </tr>
             <tr>
-                  <td class="app-cell">
+                <td class="app-cell">
                     <div class="app-content">
                         <img width="50px" height="50px" src="resources/ic_baby_heart.png" alt="Baby Heart Monitor Icon"/>
                         <a class="application-link" target="_blank" href="https://play.google.com/store/apps/details?id=com.appbards.baby.heartbeat.monitor">Hear My Baby Heartbeat Monitor</a>
                     </div>
                 </td>
                 <td></td>
-                <td></td>
+                <td>
+				 <div class="app-content">
+                        <img width="50px" height="50px" src="resources/ic_ios_baby_milestone.png" alt="My Baby Story & Stickers Maker"/>
+                        <a class="application-link" target="_blank" >My Baby Story & Stickers Maker <br/> Coming soon</a>
+                    </div>
+				</td>
             </tr>
-			<tr>
-			<td class="app-cell">
+            <tr>
+                <td class="app-cell">
                     <div class="app-content">
                         <img width="50px" height="50px" src="resources/ic_square_photo.png" alt="Square Photo No Crop Profile"/>
                         <a class="application-link" target="_blank" href="https://play.google.com/store/apps/details?id=com.appbards.profile.picture">Square Photo No Crop Profile</a>
@@ -42,7 +52,7 @@
                 </td>
                 <td></td>
                 <td></td>
-			</tr>
+            </tr>
         </table>
     </main>
 </body>
