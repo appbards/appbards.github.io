@@ -116,7 +116,6 @@ main {
 .subtitle {
     font-size: 1.5em; /* Increase font size */
     font-weight: bold; /* Make text bold */
-	align-items:left;
 }
 
 .application-link {
