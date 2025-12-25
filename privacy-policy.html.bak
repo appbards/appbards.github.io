@@ -117,9 +117,16 @@
     <p class="c1"><span class="c6">Storage permission</span></p>
     <p class="c1"><span class="c0">Used for accessing shared external storage, including the reading and adding of any items.</span>
     </p>
+	 <p class="c1 c2"><span class="c0"></span></p>
+	 <p class="c1"><span class="c6">The way this App uses photographs you provide when you use the App, via your Camera and/or Photos (if you have granted us permission to access your Camera and/or Photos):</span></p>
+	 <p class="c1"><span class="c0">We access only the specific images you choose to modify using the App at the moment of modification. Even if you grant us access to your Camera and/or Photos, we do not access or collect your entire photo library.</span>
+	 <p class="c1"><span class="c0">Any photo you take with the Camera or modify while using the App is stored locally on your device. This means that only the device used to take the photo or save the modified photo can access it – it remains on the user’s device.</span>
+	 <p class="c1"><span class="c0">We do not collect, store, or require you to upload photos to our servers or any third-party servers. Consequently, the App does not collect, store, or process any facial data from the photos you use.</span>
+	 
+	 
     <p class="c1 c2"><span class="c0"></span></p>
     <p class="c1 c2"><span class="c0"></span></p>
-    <p class="c1"><span class="c10">Detailed information on the processing of Personal Data</span>
+    <p class="c1"><span class="c6">Detailed information on the processing of Personal Data</span>
     </p>
     <p class="c1 c2"><span class="c10"></span></p>
     <p class="c1"><span class="c0">Personal Data is collected for the following purposes and using the following services:</span>
