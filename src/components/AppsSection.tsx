@@ -1,0 +1,114 @@
+import { Smartphone } from "lucide-react";
+
+const apps = [
+  {
+    name: "TaskFlow",
+    description:
+      "A smart task manager that helps teams collaborate, prioritize, and get things done with delightful simplicity.",
+    gradient: "gradient-card-1",
+    hasAppStore: true,
+    hasPlayStore: true,
+  },
+  {
+    name: "MindGarden",
+    description:
+      "A calming mindfulness and meditation app designed to help you grow healthy mental habits, one day at a time.",
+    gradient: "gradient-card-2",
+    hasAppStore: true,
+    hasPlayStore: true,
+  },
+  {
+    name: "FitPulse",
+    description:
+      "Your personal fitness companion that tracks workouts, meals, and progress with a fun, motivating experience.",
+    gradient: "gradient-card-3",
+    hasAppStore: true,
+    hasPlayStore: false,
+  },
+];
+
+const AppsSection = () => {
+  return (
+    <section id="apps" className="py-24 bg-background">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16 opacity-0 animate-fade-up">
+          <span className="inline-block text-sm font-semibold text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-4">
+            Our Portfolio
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Apps We've Crafted
+          </h2>
+          <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
+            Each app is built with care, attention to detail, and a passion for creating experiences users truly enjoy.
+          </p>
+        </div>
+
+        <div className="space-y-12">
+          {apps.map((app, index) => (
+            <div
+              key={app.name}
+              className="opacity-0 animate-fade-up"
+              style={{ animationDelay: `${index * 0.15}s` }}
+            >
+              <div
+                className={`${app.gradient} rounded-3xl p-8 md:p-12 shadow-card hover:shadow-elevated transition-shadow duration-300 relative overflow-hidden`}
+              >
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-5">
+                    {/* App icon */}
+                    <div className="w-16 h-16 rounded-2xl bg-card/80 backdrop-blur-sm shadow-soft flex items-center justify-center">
+                      <span className="text-2xl font-bold text-primary">
+                        {app.name[0]}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+                      {app.name}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {app.description}
+                    </p>
+                    <div className="flex flex-wrap gap-3 pt-2">
+                      {app.hasAppStore && (
+                        <button className="bg-foreground text-background px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                          </svg>
+                          App Store
+                        </button>
+                      )}
+                      {app.hasPlayStore && (
+                        <button className="bg-foreground text-background px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm.91-.91L19.59 12 17.72 10.79l-2.27 2.27 2.27 2.15zM6.05 2.66l10.76 6.22-2.27 2.27-8.49-8.49z"/>
+                          </svg>
+                          Google Play
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Mockup phone */}
+                  <div className="hidden md:flex justify-center">
+                    <div className="relative">
+                      <div className="w-48 h-80 rounded-[2rem] border-4 border-foreground/10 bg-card/60 backdrop-blur-sm shadow-elevated flex flex-col items-center justify-center gap-3">
+                        <Smartphone size={40} className="text-primary/40" />
+                        <span className="text-sm font-semibold text-muted-foreground">
+                          {app.name}
+                        </span>
+                      </div>
+                      {/* Decorative dot */}
+                      <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-secondary/60" />
+                      <div className="absolute -bottom-3 -left-3 w-6 h-6 rounded-full bg-accent/60" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AppsSection;
