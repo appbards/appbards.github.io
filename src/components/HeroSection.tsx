@@ -21,14 +21,14 @@ const HeroSection = () => {
             <div className="flex flex-wrap gap-4 pt-2">
               <a
                 href="#apps"
-                className="gradient-primary text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-opacity duration-200 shadow-soft"
-              >
+                className="gradient-primary text-primary-foreground px-8 py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-opacity duration-200 shadow-soft">
+
                 Explore Our Apps
               </a>
               <a
                 href="#about"
-                className="bg-card text-foreground border border-border px-8 py-3.5 rounded-full font-semibold text-base hover:shadow-card transition-all duration-200"
-              >
+                className="bg-card text-foreground border border-border px-8 py-3.5 rounded-full font-semibold text-base hover:shadow-card transition-all duration-200">
+
                 Learn More
               </a>
             </div>
@@ -37,15 +37,15 @@ const HeroSection = () => {
           {/* Right */}
           <div className="flex justify-center lg:justify-end opacity-0 animate-fade-up" style={{ animationDelay: "0.2s" }}>
             <img
-              src={heroIllustration}
+
               alt="People interacting with mobile app"
-              className="w-full max-w-lg animate-float"
-            />
+              className="w-full max-w-lg animate-float" src="/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png" />
+
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default HeroSection;
