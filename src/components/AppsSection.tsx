@@ -9,7 +9,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
-    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
     name: "MindGarden",
@@ -19,7 +19,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
-    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
     name: "FitPulse",
@@ -29,7 +29,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: false,
     bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
-    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
 ];
 
@@ -101,16 +101,11 @@ const AppsSection = () => {
                   {/* App screenshot */}
                   <div className="hidden md:flex justify-center">
                     <div className="relative">
-                      <div className="w-48 h-80 rounded-[2rem] border-4 border-foreground/10 bg-card/60 backdrop-blur-sm shadow-elevated overflow-hidden">
-                        <img
-                          src={app.screenshot}
-                          alt={`${app.name} screenshot`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      {/* Decorative dot */}
-                      <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-secondary/60" />
-                      <div className="absolute -bottom-3 -left-3 w-6 h-6 rounded-full bg-accent/60" />
+                      <img
+                        src={app.screenshot}
+                        alt={`${app.name} screenshot`}
+                        className="w-64 h-auto object-contain drop-shadow-2xl"
+                      />
                     </div>
                   </div>
                 </div>
