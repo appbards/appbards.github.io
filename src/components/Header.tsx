@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-{ label: "Home", href: "#home" },
-{ label: "Apps", href: "#apps" },
-{ label: "About Us", href: "#about" },
-{ label: "Contact", href: "#contact" }];
-
+  { label: "Home", href: "#home" },
+  { label: "Apps", href: "#apps" },
+  { label: "About Us", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,19 +23,19 @@ const Header = () => {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) =>
-          <a
-            key={link.label}
-            href={link.href}
-            className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200">
-            Privacy Police
-            {link.label}
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200"
+            >
+              {link.label}
             </a>
-          )}
+          ))}
           <a
             href="#contact"
-            className="gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity duration-200">
-
+            className="gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity duration-200"
+          >
             Get in Touch
           </a>
         </nav>
@@ -44,36 +44,36 @@ const Header = () => {
         <button
           className="md:hidden text-foreground"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu">
-
+          aria-label="Toggle menu"
+        >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile nav */}
-      {mobileOpen &&
-      <nav className="md:hidden bg-background border-t border-border px-6 pb-6 animate-fade-in">
-          {navLinks.map((link) =>
-        <a
-          key={link.label}
-          href={link.href}
-          className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors"
-          onClick={() => setMobileOpen(false)}>
-
+      {mobileOpen && (
+        <nav className="md:hidden bg-background border-t border-border px-6 pb-6 animate-fade-in">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
               {link.label}
             </a>
-        )}
+          ))}
           <a
-          href="#contact"
-          className="block mt-2 gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold text-center"
-          onClick={() => setMobileOpen(false)}>
-
+            href="#contact"
+            className="block mt-2 gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold text-center"
+            onClick={() => setMobileOpen(false)}
+          >
             Get in Touch
           </a>
         </nav>
-      }
-    </header>);
-
+      )}
+    </header>
+  );
 };
 
 export default Header;
