@@ -9,7 +9,7 @@ const apps = [
     gradient: "gradient-card-1",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    bgImage: "/lovable-uploads/taskflow-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
