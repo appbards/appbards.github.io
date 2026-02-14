@@ -1,4 +1,4 @@
-import { Smartphone } from "lucide-react";
+
 
 const apps = [
   {
@@ -8,6 +8,8 @@ const apps = [
     gradient: "gradient-card-1",
     hasAppStore: true,
     hasPlayStore: true,
+    bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
   },
   {
     name: "MindGarden",
@@ -16,6 +18,8 @@ const apps = [
     gradient: "gradient-card-2",
     hasAppStore: true,
     hasPlayStore: true,
+    bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
   },
   {
     name: "FitPulse",
@@ -24,6 +28,8 @@ const apps = [
     gradient: "gradient-card-3",
     hasAppStore: true,
     hasPlayStore: false,
+    bgImage: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
+    screenshot: "/lovable-uploads/a17b3bb5-846b-44d8-a996-ea3b9066c31e.png",
   },
 ];
 
@@ -52,6 +58,11 @@ const AppsSection = () => {
             >
               <div
                 className={`${app.gradient} rounded-3xl p-8 md:p-12 shadow-card hover:shadow-elevated transition-shadow duration-300 relative overflow-hidden`}
+                style={{
+                  backgroundImage: `url(${app.bgImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
               >
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div className="space-y-5">
@@ -87,14 +98,15 @@ const AppsSection = () => {
                     </div>
                   </div>
 
-                  {/* Mockup phone */}
+                  {/* App screenshot */}
                   <div className="hidden md:flex justify-center">
                     <div className="relative">
-                      <div className="w-48 h-80 rounded-[2rem] border-4 border-foreground/10 bg-card/60 backdrop-blur-sm shadow-elevated flex flex-col items-center justify-center gap-3">
-                        <Smartphone size={40} className="text-primary/40" />
-                        <span className="text-sm font-semibold text-muted-foreground">
-                          {app.name}
-                        </span>
+                      <div className="w-48 h-80 rounded-[2rem] border-4 border-foreground/10 bg-card/60 backdrop-blur-sm shadow-elevated overflow-hidden">
+                        <img
+                          src={app.screenshot}
+                          alt={`${app.name} screenshot`}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       {/* Decorative dot */}
                       <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-secondary/60" />
