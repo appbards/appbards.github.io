@@ -3,6 +3,7 @@
 const apps = [
   {
     name: "TaskFlow",
+    icon: "/lovable-uploads/taskflow-icon.png",
     description:
       "A smart task manager that helps teams collaborate, prioritize, and get things done with delightful simplicity.",
     gradient: "gradient-card-1",
@@ -67,10 +68,14 @@ const AppsSection = () => {
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div className="space-y-5">
                     {/* App icon */}
-                    <div className="w-16 h-16 rounded-2xl bg-card/80 backdrop-blur-sm shadow-soft flex items-center justify-center">
-                      <span className="text-2xl font-bold text-primary">
-                        {app.name[0]}
-                      </span>
+                    <div className="w-16 h-16 rounded-2xl shadow-soft overflow-hidden">
+                      {app.icon ? (
+                        <img src={app.icon} alt={`${app.name} icon`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-card/80 backdrop-blur-sm flex items-center justify-center">
+                          <span className="text-2xl font-bold text-primary">{app.name[0]}</span>
+                        </div>
+                      )}
                     </div>
                     <h3 className="text-2xl md:text-3xl font-bold text-foreground">
                       {app.name}
