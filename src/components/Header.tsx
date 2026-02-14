@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Apps", href: "#apps" },
   { label: "About Us", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Privacy Policy", href: "/privacy-policy", isRoute: true },
 ];
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
@@ -26,8 +28,9 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200"
+              href={link.isRoute ? undefined : link.href}
+              onClick={link.isRoute ? (e) => { e.preventDefault(); navigate(link.href); } : undefined}
+              className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200 cursor-pointer"
             >
               {link.label}
             </a>
@@ -56,9 +59,9 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors"
-              onClick={() => setMobileOpen(false)}
+              href={link.isRoute ? undefined : link.href}
+              className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors cursor-pointer"
+              onClick={() => { if (link.isRoute) navigate(link.href); setMobileOpen(false); }}
             >
               {link.label}
             </a>
