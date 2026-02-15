@@ -3,7 +3,7 @@
 const apps = [
   {
     name: "TaskFlow",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-1-icon.png",
     description:
       "A smart task manager that helps teams collaborate, prioritize, and get things done with delightful simplicity.",
     gradient: "gradient-card-1",
@@ -14,7 +14,7 @@ const apps = [
   },
   {
     name: "MindGarden",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-2-icon.png",
     description:
       "A calming mindfulness and meditation app designed to help you grow healthy mental habits, one day at a time.",
     gradient: "gradient-card-2",
@@ -25,7 +25,7 @@ const apps = [
   },
   {
     name: "FitPulse",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-3-icon.png",
     description:
       "Your personal fitness companion that tracks workouts, meals, and progress with a fun, motivating experience.",
     gradient: "gradient-card-3",
@@ -36,7 +36,7 @@ const apps = [
   },
   {
     name: "SnapNest",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-4-icon.png",
     description:
       "A beautiful photo organizer that helps you capture, curate, and share your most precious family moments.",
     gradient: "gradient-card-1",
@@ -47,7 +47,7 @@ const apps = [
   },
   {
     name: "LullaBy",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-5-icon.png",
     description:
       "A soothing sleep companion for babies and parents with gentle lullabies, white noise, and bedtime routines.",
     gradient: "gradient-card-2",
@@ -58,7 +58,7 @@ const apps = [
   },
   {
     name: "TinySteps",
-    icon: "/lovable-uploads/taskflow-icon.png",
+    icon: "/lovable-uploads/app-6-icon.png",
     description:
       "Track your little one's milestones, growth, and daily activities with a joyful and intuitive experience.",
     gradient: "gradient-card-3",
@@ -107,7 +107,7 @@ const AppsSection = () => {
                     {/* Text content */}
                     <div className={`space-y-5 ${isReversed ? "md:order-2" : ""}`}>
                       {/* App icon */}
-                      <div className="w-16 h-16 rounded-2xl shadow-soft overflow-hidden">
+                      <div className="w-20 h-20 rounded-2xl shadow-soft overflow-hidden">
                         {app.icon ? (
                           <img src={app.icon} alt={`${app.name} icon`} className="w-full h-full object-cover" />
                         ) : (
