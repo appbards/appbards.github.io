@@ -9,7 +9,7 @@ const apps = [
     gradient: "gradient-card-1",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-1-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
@@ -20,7 +20,7 @@ const apps = [
     gradient: "gradient-card-2",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-2-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
@@ -31,7 +31,7 @@ const apps = [
     gradient: "gradient-card-3",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-3-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
@@ -42,7 +42,7 @@ const apps = [
     gradient: "gradient-card-1",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-4-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
@@ -53,7 +53,7 @@ const apps = [
     gradient: "gradient-card-2",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-5-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
   {
@@ -64,7 +64,7 @@ const apps = [
     gradient: "gradient-card-3",
     hasAppStore: true,
     hasPlayStore: true,
-    bgImage: "/lovable-uploads/taskflow-bg.png",
+    bgImage: "/lovable-uploads/app-6-bg.png",
     screenshot: "/lovable-uploads/iphone-screenshot.png",
   },
 ];
