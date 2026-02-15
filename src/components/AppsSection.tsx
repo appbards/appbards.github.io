@@ -7,8 +7,9 @@ const apps = [
     description:
       "A smart task manager that helps teams collaborate, prioritize, and get things done with delightful simplicity.",
     gradient: "gradient-card-1",
-    hasAppStore: true,
+    hasAppStore: false,
     hasPlayStore: true,
+    comingSoon: false,
     bgImage: "/lovable-uploads/app-1-bg.png",
     screenshot: "/lovable-uploads/app-1-phone.png",
   },
@@ -18,8 +19,9 @@ const apps = [
     description:
       "A calming mindfulness and meditation app designed to help you grow healthy mental habits, one day at a time.",
     gradient: "gradient-card-2",
-    hasAppStore: true,
+    hasAppStore: false,
     hasPlayStore: true,
+    comingSoon: false,
     bgImage: "/lovable-uploads/app-2-bg.png",
     screenshot: "/lovable-uploads/app-2-phone.png",
   },
@@ -30,7 +32,8 @@ const apps = [
       "Your personal fitness companion that tracks workouts, meals, and progress with a fun, motivating experience.",
     gradient: "gradient-card-3",
     hasAppStore: true,
-    hasPlayStore: true,
+    hasPlayStore: false,
+    comingSoon: false,
     bgImage: "/lovable-uploads/app-3-bg.png",
     screenshot: "/lovable-uploads/app-3-phone.png",
   },
@@ -40,8 +43,9 @@ const apps = [
     description:
       "A beautiful photo organizer that helps you capture, curate, and share your most precious family moments.",
     gradient: "gradient-card-1",
-    hasAppStore: true,
+    hasAppStore: false,
     hasPlayStore: true,
+    comingSoon: false,
     bgImage: "/lovable-uploads/app-4-bg.png",
     screenshot: "/lovable-uploads/app-4-phone.png",
   },
@@ -53,6 +57,7 @@ const apps = [
     gradient: "gradient-card-2",
     hasAppStore: true,
     hasPlayStore: true,
+    comingSoon: false,
     bgImage: "/lovable-uploads/app-5-bg.png",
     screenshot: "/lovable-uploads/app-5-phone.png",
   },
@@ -63,7 +68,8 @@ const apps = [
       "Track your little one's milestones, growth, and daily activities with a joyful and intuitive experience.",
     gradient: "gradient-card-3",
     hasAppStore: true,
-    hasPlayStore: true,
+    hasPlayStore: false,
+    comingSoon: true,
     bgImage: "/lovable-uploads/app-6-bg.png",
     screenshot: "/lovable-uploads/app-6-phone.png",
   },
@@ -124,11 +130,16 @@ const AppsSection = () => {
                       </p>
                       <div className="flex flex-wrap gap-3 pt-2">
                         {app.hasAppStore && (
-                          <button className="bg-foreground text-background px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
+                          <button className="bg-foreground text-background px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2 relative">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                             </svg>
                             App Store
+                            {app.comingSoon && (
+                              <span className="absolute -top-2.5 -right-3 bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                                Soon
+                              </span>
+                            )}
                           </button>
                         )}
                         {app.hasPlayStore && (
