@@ -10,7 +10,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-1-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-1-phone.png",
   },
   {
     name: "MindGarden",
@@ -21,7 +21,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-2-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-2-phone.png",
   },
   {
     name: "FitPulse",
@@ -32,7 +32,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-3-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-3-phone.png",
   },
   {
     name: "SnapNest",
@@ -43,7 +43,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-4-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-4-phone.png",
   },
   {
     name: "LullaBy",
@@ -54,7 +54,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-5-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-5-phone.png",
   },
   {
     name: "TinySteps",
@@ -65,7 +65,7 @@ const apps = [
     hasAppStore: true,
     hasPlayStore: true,
     bgImage: "/lovable-uploads/app-6-bg.png",
-    screenshot: "/lovable-uploads/iphone-screenshot.png",
+    screenshot: "/lovable-uploads/app-6-phone.png",
   },
 ];
 
@@ -148,7 +148,7 @@ const AppsSection = () => {
                         <img
                           src={app.screenshot}
                           alt={`${app.name} screenshot`}
-                          className="w-64 h-auto object-contain drop-shadow-2xl"
+                          className="w-80 h-auto object-contain drop-shadow-2xl transition-transform duration-300 hover:scale-110"
                         />
                       </div>
                     </div>
