@@ -30,7 +30,7 @@ const Footer = () =>
 
         <div className="space-y-4">
           <h4 className="font-semibold text-foreground">Get in Touch</h4>
-          <p className="text-sm text-muted-foreground">hello@appbards.com</p>
+          <p className="text-sm text-muted-foreground">appbards@gmail.com</p>
           
         </div>
       </div>
