@@ -1,13 +1,12 @@
+import footerLogo from "@/assets/footer-logo.png";
+
 const Footer = () =>
 <footer id="contact" className="bg-muted py-16">
     <div className="container mx-auto px-6">
       <div className="grid md:grid-cols-3 gap-12">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">AB</span>
-            </div>
-            <span className="text-lg font-bold text-foreground">App Bards</span>
+          <div className="flex items-center">
+            <img src={footerLogo} alt="App Bards" className="h-10 w-auto" />
           </div>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
             Crafting beautiful mobile experiences that people love to use every day.
