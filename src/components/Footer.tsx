@@ -1,7 +1,7 @@
 import footerLogo from "@/assets/footer-logo.png";
 
 const Footer = () =>
-<footer id="contact" className="bg-muted py-16">
+<footer className="bg-muted py-16">
     <div className="container mx-auto px-6">
       <div className="grid md:grid-cols-3 gap-12">
         <div className="space-y-4">
