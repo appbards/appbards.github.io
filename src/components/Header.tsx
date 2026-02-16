@@ -75,9 +75,15 @@ const Header = () => {
             </a>
           ))}
           <a
-            href="#contact"
-            className="block mt-2 gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold text-center"
-            onClick={() => setMobileOpen(false)}
+            href={location.pathname === "/" ? "#contact" : undefined}
+            className="block mt-2 gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold text-center cursor-pointer"
+            onClick={(e) => {
+              if (location.pathname !== "/") {
+                e.preventDefault();
+                navigate("/#contact");
+              }
+              setMobileOpen(false);
+            }}
           >
             Get in Touch
           </a>
