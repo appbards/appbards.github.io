@@ -2,10 +2,10 @@
 
 const apps = [
 {
-  name: "TaskFlow",
+  name: "Hear My Baby Heartbeat Monitor",
   icon: "/lovable-uploads/app-1-icon.png",
   description:
-  "A smart task manager that helps teams collaborate, prioritize, and get things done with delightful simplicity.",
+  "Cherish every beat! Capture your baby's heart sounds with our fetal doppler app.",
   gradient: "gradient-card-1",
   hasAppStore: false,
   hasPlayStore: true,
@@ -14,10 +14,10 @@ const apps = [
   screenshot: "/lovable-uploads/app-1-phone.png"
 },
 {
-  name: "MindGarden",
+  name: "Square Photo No Crop Profile",
   icon: "/lovable-uploads/app-2-icon.png",
   description:
-  "A calming mindfulness and meditation app designed to help you grow healthy mental habits, one day at a time.",
+  "Create a profile picture without cropping in no time! With our no crop photo app.",
   gradient: "gradient-card-2",
   hasAppStore: false,
   hasPlayStore: true,
@@ -26,10 +26,10 @@ const apps = [
   screenshot: "/lovable-uploads/app-2-phone.png"
 },
 {
-  name: "FitPulse",
+  name: "My Baby Story & Stickers Maker",
   icon: "/lovable-uploads/app-3-icon.png",
   description:
-  "Your personal fitness companion that tracks workouts, meals, and progress with a fun, motivating experience.",
+  "A place where precious and funny moments with your baby moments turn into adorable, shareable stickers and stories!",
   gradient: "gradient-card-3",
   hasAppStore: true,
   hasPlayStore: false,
@@ -38,10 +38,10 @@ const apps = [
   screenshot: "/lovable-uploads/app-3-phone.png"
 },
 {
-  name: "SnapNest",
+  name: "Tuning Fork",
   icon: "/lovable-uploads/app-4-icon.png",
   description:
-  "A beautiful photo organizer that helps you capture, curate, and share your most precious family moments.",
+  "Simple tuning fork app for musicians. If you are a musician or a singer, this simple tuning fork app is just right for you.",
   gradient: "gradient-card-1",
   hasAppStore: false,
   hasPlayStore: true,
@@ -50,10 +50,10 @@ const apps = [
   screenshot: "/lovable-uploads/app-4-phone.png"
 },
 {
-  name: "LullaBy",
+  name: "Pet Tracker: Weight & Vaccines",
   icon: "/lovable-uploads/app-5-icon.png",
   description:
-  "A soothing sleep companion for babies and parents with gentle lullabies, white noise, and bedtime routines.",
+  "Track pet weight, vaccines, and care records in one simple and reliable app.",
   gradient: "gradient-card-2",
   hasAppStore: true,
   hasPlayStore: true,
@@ -62,10 +62,10 @@ const apps = [
   screenshot: "/lovable-uploads/app-5-phone.png"
 },
 {
-  name: "TinySteps",
+  name: "Find My Lost Bluetooth Device",
   icon: "/lovable-uploads/app-6-icon.png",
   description:
-  "Track your little one's milestones, growth, and daily activities with a joyful and intuitive experience.",
+  "Easily find lost devices; locate earbuds, headsets and other Bluetooth devices.",
   gradient: "gradient-card-3",
   hasAppStore: true,
   hasPlayStore: false,
