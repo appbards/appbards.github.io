@@ -96,6 +96,10 @@
     @apply bg-background text-foreground font-sans;
     font-family: 'Montserrat', sans-serif;
   }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
 }
 
 @layer utilities {
