@@ -6,15 +6,16 @@ const Footer = () => {
   const location = useLocation();
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
-    e.preventDefault();
     const id = `#${section.toLowerCase().replace(" ", "")}`;
     if (location.pathname !== "/") {
-      navigate("/", { state: { scrollTo: id } });
-    } else {
-      const element = document.querySelector(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      e.preventDefault();
+      navigate("/");
+      setTimeout(() => {
+        const element = document.querySelector(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
     }
   };
 

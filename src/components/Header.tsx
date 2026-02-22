@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
@@ -12,41 +12,45 @@ const navLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: typeof navLinks[0]) => {
-    e.preventDefault();
     if (link.isRoute) {
-      if (location.pathname !== link.href) {
-        navigate(link.href);
-      }
-    } else if (location.pathname !== "/") {
-      navigate("/", { state: { scrollTo: link.href } });
-    } else {
-      const element = document.querySelector(link.href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      e.preventDefault();
+      navigate(link.href);
+      setMobileOpen(false);
+      return;
     }
+    
+    // For hash links, if we're not on the home page, navigate to home first
+    if (location.pathname !== "/") {
+      e.preventDefault();
+      navigate("/");
+      // The browser will automatically scroll to the hash after navigation
+      // if we append it to the URL, or we let the link behave natively on the home page
+      setTimeout(() => {
+        const element = document.querySelector(link.href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+    
+    setMobileOpen(false);
   };
 
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <a 
-          href={location.pathname === "/" ? "#home" : "/"} 
+          href="/" 
           onClick={(e) => {
-            e.preventDefault();
-            if (location.pathname !== "/") {
-              navigate("/", { state: { scrollTo: "#home" } });
-            } else {
-              const element = document.querySelector("#home");
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
+            if (location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }
-          }} 
+          }}
           className="flex items-center gap-2"
         >
           <img src={logo} alt="App Bards" className="h-10 w-auto" />
@@ -57,20 +61,13 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.isRoute ? `/#${link.href}` : undefined}
+              href={link.isRoute ? link.href : link.href}
               onClick={(e) => handleNavClick(e, link)}
               className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200 cursor-pointer"
             >
               {link.label}
             </a>
           ))}
-          {/* <a
-            href={location.pathname === "/" ? "#contact" : undefined}
-            onClick={location.pathname !== "/" ? (e) => { e.preventDefault(); navigate("/#contact"); } : undefined}
-            className="gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity duration-200"
-          >
-            Get in Touch
-          </a> */}
         </nav>
 
         {/* Mobile toggle */}
@@ -89,26 +86,13 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.isRoute ? `/#${link.href}` : undefined}
+              href={link.isRoute ? link.href : link.href}
               className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors cursor-pointer"
-              onClick={(e) => { handleNavClick(e, link); setMobileOpen(false); }}
+              onClick={(e) => handleNavClick(e, link)}
             >
               {link.label}
             </a>
           ))}
-          {/* <a
-            href={location.pathname === "/" ? "#contact" : undefined}
-            className="block mt-2 gradient-primary text-primary-foreground px-5 py-2.5 rounded-full text-sm font-semibold text-center cursor-pointer"
-            onClick={(e) => {
-              if (location.pathname !== "/") {
-                e.preventDefault();
-                navigate("/#contact");
-              }
-              setMobileOpen(false);
-            }}
-          >
-            Get in Touch
-          </a> */}
         </nav>
       )}
     </header>
