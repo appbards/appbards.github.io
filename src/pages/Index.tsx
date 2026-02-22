@@ -11,13 +11,14 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.hash) {
+    const target = location.state?.scrollTo || location.hash;
+    if (target) {
       setTimeout(() => {
-        const el = document.querySelector(location.hash);
+        const el = document.querySelector(target);
         el?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
-  }, [location.hash]);
+  }, [location.hash, location.state]);
 
   return (
     <div className="min-h-screen bg-background">

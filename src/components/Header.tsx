@@ -15,11 +15,19 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavClick = (link: typeof navLinks[0]) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, link: typeof navLinks[0]) => {
+    e.preventDefault();
     if (link.isRoute) {
-      navigate(link.href);
+      if (location.pathname !== link.href) {
+        navigate(link.href);
+      }
     } else if (location.pathname !== "/") {
-      navigate("/" + link.href);
+      navigate("/", { state: { scrollTo: link.href } });
+    } else {
+      const element = document.querySelector(link.href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -35,8 +43,8 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.isRoute ? undefined : (location.pathname === "/" ? link.href : undefined)}
-              onClick={link.isRoute || location.pathname !== "/" ? (e) => { e.preventDefault(); handleNavClick(link); } : undefined}
+              href={link.isRoute ? `/#${link.href}` : undefined}
+              onClick={(e) => handleNavClick(e, link)}
               className="text-muted-foreground font-medium text-sm hover:text-primary transition-colors duration-200 cursor-pointer"
             >
               {link.label}
@@ -67,9 +75,9 @@ const Header = () => {
           {navLinks.map((link) => (
             <a
               key={link.label}
-              href={link.isRoute ? undefined : (location.pathname === "/" ? link.href : undefined)}
+              href={link.isRoute ? `/#${link.href}` : undefined}
               className="block py-3 text-muted-foreground font-medium hover:text-primary transition-colors cursor-pointer"
-              onClick={() => { handleNavClick(link); setMobileOpen(false); }}
+              onClick={(e) => { handleNavClick(e, link); setMobileOpen(false); }}
             >
               {link.label}
             </a>
