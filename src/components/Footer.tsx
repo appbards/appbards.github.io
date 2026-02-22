@@ -1,47 +1,66 @@
 import footerLogo from "@/assets/footer-logo.png";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Footer = () =>
-<footer className="bg-muted py-16">
-    <div className="container mx-auto px-6">
-      <div className="grid md:grid-cols-3 gap-12">
-        <div className="space-y-4">
-          <div className="flex items-center">
-            <img src={footerLogo} alt="App Bards" className="h-10 w-auto" />
+const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
+    e.preventDefault();
+    const id = `#${section.toLowerCase().replace(" ", "")}`;
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      const element = document.querySelector(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  return (
+    <footer className="bg-muted py-16">
+      <div className="container mx-auto px-6">
+        <div className="grid md:grid-cols-3 gap-12">
+          <div className="space-y-4">
+            <div className="flex items-center">
+              <img src={footerLogo} alt="App Bards" className="h-10 w-auto" />
+            </div>
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+              Crafting beautiful mobile experiences that people love to use every day.
+            </p>
           </div>
-          <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-            Crafting beautiful mobile experiences that people love to use every day.
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-foreground">Quick Links</h4>
+            <div className="flex flex-col gap-2">
+              {["Home", "Apps", "About Us"].map((link) => (
+                <a
+                  key={link}
+                  href={`#${link.toLowerCase().replace(" ", "")}`}
+                  onClick={(e) => handleLinkClick(e, link)}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                >
+                  {link}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-foreground">Get in Touch</h4>
+            <p className="text-sm text-muted-foreground">appbards@gmail.com</p>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-border text-center">
+          <p className="text-sm text-muted-foreground">
+            © 2026 App Bards. All rights reserved.
           </p>
         </div>
-
-        <div className="space-y-4">
-          <h4 className="font-semibold text-foreground">Quick Links</h4>
-          <div className="flex flex-col gap-2">
-            {["Home", "Apps", "About Us"/* , "Contact" */].map((link) =>
-          <a
-            key={link}
-            href={`#${link.toLowerCase().replace(" ", "")}`}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors">
-
-                {link}
-              </a>
-          )}
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h4 className="font-semibold text-foreground">Get in Touch</h4>
-          <p className="text-sm text-muted-foreground">appbards@gmail.com</p>
-          
-        </div>
       </div>
-
-      <div className="mt-12 pt-8 border-t border-border text-center">
-        <p className="text-sm text-muted-foreground">
-          © 2026 App Bards. All rights reserved.
-        </p>
-      </div>
-    </div>
-  </footer>;
-
+    </footer>
+  );
+};
 
 export default Footer;

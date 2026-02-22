@@ -34,7 +34,21 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href={location.pathname === "/" ? "#home" : "/"} onClick={location.pathname !== "/" ? (e) => { e.preventDefault(); navigate("/"); } : undefined} className="flex items-center gap-2">
+        <a 
+          href={location.pathname === "/" ? "#home" : "/"} 
+          onClick={(e) => {
+            e.preventDefault();
+            if (location.pathname !== "/") {
+              navigate("/", { state: { scrollTo: "#home" } });
+            } else {
+              const element = document.querySelector("#home");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }
+          }} 
+          className="flex items-center gap-2"
+        >
           <img src={logo} alt="App Bards" className="h-10 w-auto" />
         </a>
 
