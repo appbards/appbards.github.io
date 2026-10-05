@@ -17,7 +17,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
 
-const ORIGIN = "https://appbards.github.io";
+const ORIGIN = "https://appbards.com";
 const SITE_NAME = "App Bards";
 
 // Pages that are already static files; listed in the sitemap only.
