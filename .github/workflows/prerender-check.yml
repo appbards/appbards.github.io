@@ -1,0 +1,28 @@
+name: Prerender check
+
+# GitHub Pages serves this branch as-is, so the prerendered pages are committed.
+# This fails when they are out of date with the bundle or index.html.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  prerender:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run prerender
+      - name: Fail if generated pages are stale
+        run: |
+          git add -A
+          git diff --cached --exit-code || {
+            echo "::error::Prerendered pages are stale. Run 'npm run prerender' and commit the result."
+            exit 1
+          }

@@ -1,0 +1,11 @@
+{
+  "name": "appbards.github.io",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prerender": "node scripts/prerender.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}
