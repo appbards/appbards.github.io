@@ -99,7 +99,7 @@ function buildSitemap(paths) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-const template = (await readFile(path.join(ROOT, "index.html"), "utf8")).replace(/\r\n/g, "\n");
+const template = (await readFile(path.join(ROOT, "index.html"), "utf8")).replace(/\r+\n/g, "\n");
 if (!template.includes(EMPTY_ROOT)) throw new Error(`index.html: could not find ${EMPTY_ROOT}`);
 
 const server = await startServer(template);
