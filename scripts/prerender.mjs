@@ -1,10 +1,11 @@
-// Build-time prerender for crawlable app pages.
+// Build-time prerender for crawlable app and blog pages.
 //
 // The site is a client-rendered SPA, so a direct request to /apps/<slug> used
 // to hit GitHub Pages' 404.html and only got content after JavaScript ran.
-// This script loads every app page linked from the home page in headless
-// Chrome using the real bundle, snapshots the rendered markup and writes it to
-// <route>.html, which GitHub
+// This script loads every app page linked from the home page, the blog index
+// and every article it links to in headless Chrome using the real bundle,
+// snapshots the rendered markup and writes it to <route>.html (index.html for
+// a route ending in "/"), which GitHub
 // Pages serves with HTTP 200 at the extensionless URL. It also writes
 // sitemap.xml. The bundle stays the single source of truth for the content.
 //
@@ -22,6 +23,7 @@ const SITE_NAME = "App Bards";
 
 // Pages that are already static files; listed in the sitemap only.
 const STATIC_PAGES = ["/", "/privacy-policy/"];
+const BLOG_ROUTE = "/blog/";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EMPTY_ROOT = '<div id="root"></div>';
@@ -78,7 +80,7 @@ function replaceOnce(html, pattern, replacement, label) {
   return html.replace(pattern, replacement);
 }
 
-function buildHtml(template, { title, description, canonical, rootHtml }) {
+function buildHtml(template, { title, description, canonical, rootHtml, ogType, image, jsonLd }) {
   const t = escapeHtml(title);
   const d = escapeHtml(description);
   let html = template;
@@ -88,11 +90,37 @@ function buildHtml(template, { title, description, canonical, rootHtml }) {
   html = replaceOnce(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/, `<meta name="twitter:title" content="${t}">`, "twitter:title");
   html = replaceOnce(html, /<meta property="og:description" content="[^"]*"\s*\/?>/, `<meta property="og:description" content="${d}">`, "og:description");
   html = replaceOnce(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/, `<meta name="twitter:description" content="${d}">`, "twitter:description");
+  if (ogType) html = replaceOnce(html, /<meta property="og:type" content="[^"]*"\s*\/?>/, `<meta property="og:type" content="${ogType}" />`, "og:type");
+  if (image) {
+    const i = escapeHtml(image);
+    html = replaceOnce(html, /<meta property="og:image" content="[^"]*"\s*\/?>/, `<meta property="og:image" content="${i}">`, "og:image");
+    html = replaceOnce(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${i}">`, "twitter:image");
+  }
+  if (jsonLd) {
+    const json = JSON.stringify(jsonLd).replace(/<\//g, "<\\/");
+    html = html.replace("</head>", () => `  <script type="application/ld+json">${json}</script>\n</head>`);
+  }
   // React mounts with createRoot().render(), which replaces this markup on its
   // first commit, so the prerendered copy never ends up duplicated.
   html = html.replace(EMPTY_ROOT, () => `<div id="root">${rootHtml}</div>`);
   return html;
 }
+
+// A route ending in "/" is written as its directory's index.html.
+async function writePage(route, html, label) {
+  const outFile = path.join(ROOT, route.endsWith("/") ? `${route}index.html` : `${route}.html`);
+  await mkdir(path.dirname(outFile), { recursive: true });
+  await writeFile(outFile, html);
+  console.log(`prerendered ${route} -> ${path.relative(ROOT, outFile)} (${html.length} bytes, "${label}")`);
+}
+
+// The blog pages set their own <title>, description and preview image.
+const readHead = (page) =>
+  page.evaluate(() => ({
+    title: document.title,
+    description: document.querySelector('meta[name="description"]').content,
+    image: document.querySelector('meta[property="og:image"]').content,
+  }));
 
 function buildSitemap(paths) {
   const urls = paths.map((p) => `  <url><loc>${ORIGIN}${p}</loc></url>`).join("\n");
@@ -134,14 +162,64 @@ try {
       rootHtml,
     });
 
-    const outFile = path.join(ROOT, `${route}.html`);
-    await mkdir(path.dirname(outFile), { recursive: true });
-    await writeFile(outFile, html);
-    console.log(`prerendered ${route} -> ${path.relative(ROOT, outFile)} (${html.length} bytes, "${title}")`);
+    await writePage(route, html, title);
     await page.close();
   }
 
-  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([...STATIC_PAGES, ...routes]));
+  // The blog index links to every article.
+  const blog = await renderRoot(browser, base + BLOG_ROUTE, "#root main h1");
+  const posts = await blog.$$eval('#root main a[href^="/blog/"]', (links) => [
+    ...new Set(links.map((a) => a.getAttribute("href"))),
+  ]);
+  if (posts.length === 0) throw new Error("no articles found on the blog index");
+  const blogHead = await readHead(blog);
+  await writePage(
+    BLOG_ROUTE,
+    buildHtml(template, {
+      title: blogHead.title,
+      description: blogHead.description,
+      canonical: ORIGIN + BLOG_ROUTE,
+      rootHtml: await blog.$eval("#root", (el) => el.innerHTML),
+    }),
+    blogHead.title,
+  );
+  await blog.close();
+
+  for (const route of posts) {
+    const page = await renderRoot(browser, base + route, "#root main article h1");
+    const head = await readHead(page);
+    const headline = await page.$eval("#root main h1", (el) => el.textContent.trim());
+    const datePublished = await page.$eval("#root main time", (el) => el.dateTime);
+    const canonical = ORIGIN + route;
+    const organization = { "@type": "Organization", name: SITE_NAME, url: `${ORIGIN}/` };
+
+    const html = buildHtml(template, {
+      title: head.title,
+      description: head.description,
+      canonical,
+      rootHtml: await page.$eval("#root", (el) => el.innerHTML),
+      ogType: "article",
+      image: head.image,
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline,
+        description: head.description,
+        image: head.image,
+        datePublished,
+        dateModified: datePublished,
+        url: canonical,
+        mainEntityOfPage: canonical,
+        author: organization,
+        publisher: organization,
+      },
+    });
+
+    await writePage(route, html, headline);
+    await page.close();
+  }
+
+  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([...STATIC_PAGES, ...routes, BLOG_ROUTE, ...posts]));
   console.log("wrote sitemap.xml");
 } finally {
   await browser.close();
