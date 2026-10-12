@@ -1,7 +1,7 @@
 name: Prerender check
 
 # GitHub Pages serves this branch as-is, so the prerendered pages are committed.
-# This fails when they are out of date with the bundle or index.html.
+# This fails when they are out of date with the bundle or scripts/index.template.html.
 
 on:
   push:

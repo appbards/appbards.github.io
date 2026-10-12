@@ -2,14 +2,17 @@
 //
 // The site is a client-rendered SPA, so a direct request to /apps/<slug> used
 // to hit GitHub Pages' 404.html and only got content after JavaScript ran.
-// This script loads the /apps index, every app page linked from the home page,
-// the blog index and every article it links to in headless Chrome using the real bundle,
-// snapshots the rendered markup and writes it to <route>.html (index.html for
-// a route ending in "/"), which GitHub
+// This script loads the home page, the /apps index, every app page linked from
+// the home page, the blog index and every article it links to in headless Chrome
+// using the real bundle, snapshots the rendered markup and writes it to
+// <route>.html (index.html for a route ending in "/"), which GitHub
 // Pages serves with HTTP 200 at the extensionless URL. It also writes
 // sitemap.xml. The bundle stays the single source of truth for the content.
 //
-// Usage: npm run prerender   (re-run after every change to the bundle or index.html)
+// The page shell is scripts/index.template.html; the root index.html is generated
+// from it, so edit the template, never index.html.
+//
+// Usage: npm run prerender   (re-run after every change to the bundle or the template)
 
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
@@ -21,14 +24,19 @@ import puppeteer from "puppeteer-core";
 const ORIGIN = "https://appbards.com";
 const SITE_NAME = "App Bards";
 
+const HOME_ROUTE = "/";
 // Pages that are already static files; listed in the sitemap only.
-const STATIC_PAGES = ["/", "/privacy-policy/"];
+const STATIC_PAGES = ["/privacy-policy/"];
+// 404.html redirects unknown paths to index.html, which then renders that path.
+// This drops the prerendered home markup in that case so it never flashes.
+const HOME_ONLY_SCRIPT = `<script>if(location.pathname!=="/")document.getElementById("root").innerHTML=""</script>`;
 const BLOG_ROUTE = "/blog/";
 // The apps index. GitHub Pages serves apps.html at /apps; the same page is also
 // written to apps/index.html so /apps/ is a 200 too (canonical stays /apps).
 const APPS_ROUTE = "/apps";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const TEMPLATE = "scripts/index.template.html";
 const EMPTY_ROOT = '<div id="root"></div>';
 
 const MIME = {
@@ -79,11 +87,11 @@ async function renderRoot(browser, url, readySelector) {
 }
 
 function replaceOnce(html, pattern, replacement, label) {
-  if (!pattern.test(html)) throw new Error(`index.html: could not find ${label}`);
+  if (!pattern.test(html)) throw new Error(`${TEMPLATE}: could not find ${label}`);
   return html.replace(pattern, replacement);
 }
 
-function buildHtml(template, { title, description, canonical, rootHtml, ogType, image, jsonLd }) {
+function buildHtml(template, { title, description, canonical, rootHtml, ogType, image, jsonLd, afterRoot = "" }) {
   const t = escapeHtml(title);
   const d = escapeHtml(description);
   let html = template;
@@ -105,7 +113,7 @@ function buildHtml(template, { title, description, canonical, rootHtml, ogType, 
   }
   // React mounts with createRoot().render(), which replaces this markup on its
   // first commit, so the prerendered copy never ends up duplicated.
-  html = html.replace(EMPTY_ROOT, () => `<div id="root">${rootHtml}</div>`);
+  html = html.replace(EMPTY_ROOT, () => `<div id="root">${rootHtml}</div>${afterRoot}`);
   return html;
 }
 
@@ -130,8 +138,8 @@ function buildSitemap(paths) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-const template = (await readFile(path.join(ROOT, "index.html"), "utf8")).replace(/\r+\n/g, "\n");
-if (!template.includes(EMPTY_ROOT)) throw new Error(`index.html: could not find ${EMPTY_ROOT}`);
+const template = (await readFile(path.join(ROOT, TEMPLATE), "utf8")).replace(/\r+\n/g, "\n");
+if (!template.includes(EMPTY_ROOT)) throw new Error(`${TEMPLATE}: could not find ${EMPTY_ROOT}`);
 
 const server = await startServer(template);
 const base = `http://127.0.0.1:${server.address().port}`;
@@ -210,6 +218,20 @@ try {
     await writePage(route, html, title);
     await page.close();
   }
+
+  // The home page keeps the template's own title and description.
+  const homeHead = await readHead(home);
+  await writePage(
+    HOME_ROUTE,
+    buildHtml(template, {
+      title: homeHead.title,
+      description: homeHead.description,
+      canonical: ORIGIN + HOME_ROUTE,
+      rootHtml: await home.$eval("#root", (el) => el.innerHTML),
+      afterRoot: `\n    ${HOME_ONLY_SCRIPT}`,
+    }),
+    homeHead.title,
+  );
 
   // The apps index lists every app with a link to its page.
   const apps = await renderRoot(browser, base + APPS_ROUTE, "#root main h1");
@@ -302,7 +324,7 @@ try {
     await page.close();
   }
 
-  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([...STATIC_PAGES, APPS_ROUTE, ...routes, BLOG_ROUTE, ...posts]));
+  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([HOME_ROUTE, ...STATIC_PAGES, APPS_ROUTE, ...routes, BLOG_ROUTE, ...posts]));
   console.log("wrote sitemap.xml");
 } finally {
   await browser.close();
