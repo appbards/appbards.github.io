@@ -96,8 +96,8 @@ function buildHtml(template, { title, description, canonical, rootHtml, ogType, 
     html = replaceOnce(html, /<meta property="og:image" content="[^"]*"\s*\/?>/, `<meta property="og:image" content="${i}">`, "og:image");
     html = replaceOnce(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/, `<meta name="twitter:image" content="${i}">`, "twitter:image");
   }
-  if (jsonLd) {
-    const json = JSON.stringify(jsonLd).replace(/<\//g, "<\\/");
+  for (const item of [jsonLd ?? []].flat()) {
+    const json = JSON.stringify(item).replace(/<\//g, "<\\/");
     html = html.replace("</head>", () => `  <script type="application/ld+json">${json}</script>\n</head>`);
   }
   // React mounts with createRoot().render(), which replaces this markup on its
@@ -154,12 +154,54 @@ try {
       .$eval(`[id="${slug}"] h3 + p`, (el) => el.textContent.trim())
       .catch(() => firstParagraph);
     const rootHtml = await page.$eval("#root", (el) => el.innerHTML);
+    const canonical = ORIGIN + route;
+
+    // Structured data is read from the rendered page: store badges, the icon,
+    // optional data-category / data-free on <main> and an optional FAQ block.
+    const app = await page.$eval("#root main", (main) => ({
+      icon: main.querySelector("img").getAttribute("src"),
+      stores: [...main.querySelectorAll('a[href*="play.google.com"], a[href*="apps.apple.com"]')].map((a) => a.href),
+      category: main.dataset.category,
+      free: "free" in main.dataset,
+      faq: [...main.querySelectorAll("[data-faq] h3")].map((h) => ({
+        question: h.textContent.trim(),
+        answer: h.nextElementSibling.textContent.trim(),
+      })),
+    }));
+    const storeUrl = app.stores[0]?.split("&referrer=")[0];
+    const jsonLd = [
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: title,
+        description,
+        url: canonical,
+        image: ORIGIN + app.icon,
+        operatingSystem: app.stores.map((s) => (s.includes("play.google.com") ? "Android" : "iOS")).join(", ") || undefined,
+        applicationCategory: app.category,
+        installUrl: storeUrl,
+        offers: app.free ? { "@type": "Offer", price: "0", priceCurrency: "USD" } : undefined,
+        publisher: { "@type": "Organization", name: SITE_NAME, url: `${ORIGIN}/` },
+      },
+    ];
+    if (app.faq.length > 0) {
+      jsonLd.push({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: app.faq.map(({ question, answer }) => ({
+          "@type": "Question",
+          name: question,
+          acceptedAnswer: { "@type": "Answer", text: answer },
+        })),
+      });
+    }
 
     const html = buildHtml(template, {
       title: `${title} - ${SITE_NAME}`,
       description,
-      canonical: ORIGIN + route,
+      canonical,
       rootHtml,
+      jsonLd,
     });
 
     await writePage(route, html, title);
