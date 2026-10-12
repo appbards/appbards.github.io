@@ -2,8 +2,8 @@
 //
 // The site is a client-rendered SPA, so a direct request to /apps/<slug> used
 // to hit GitHub Pages' 404.html and only got content after JavaScript ran.
-// This script loads every app page linked from the home page, the blog index
-// and every article it links to in headless Chrome using the real bundle,
+// This script loads the /apps index, every app page linked from the home page,
+// the blog index and every article it links to in headless Chrome using the real bundle,
 // snapshots the rendered markup and writes it to <route>.html (index.html for
 // a route ending in "/"), which GitHub
 // Pages serves with HTTP 200 at the extensionless URL. It also writes
@@ -24,6 +24,9 @@ const SITE_NAME = "App Bards";
 // Pages that are already static files; listed in the sitemap only.
 const STATIC_PAGES = ["/", "/privacy-policy/"];
 const BLOG_ROUTE = "/blog/";
+// The apps index. GitHub Pages serves apps.html at /apps; the same page is also
+// written to apps/index.html so /apps/ is a 200 too (canonical stays /apps).
+const APPS_ROUTE = "/apps";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EMPTY_ROOT = '<div id="root"></div>';
@@ -208,6 +211,44 @@ try {
     await page.close();
   }
 
+  // The apps index lists every app with a link to its page.
+  const apps = await renderRoot(browser, base + APPS_ROUTE, "#root main h1");
+  const listed = await apps.$$eval('#root main a[href^="/apps/"]', (links) =>
+    links.map((a) => ({
+      route: a.getAttribute("href"),
+      name: a.closest("[id]").querySelector("h2").textContent.trim(),
+    })),
+  );
+  const missing = routes.filter((route) => !listed.some((app) => app.route === route));
+  if (missing.length > 0) throw new Error(`${APPS_ROUTE} does not link to ${missing.join(", ")}`);
+  const appsHead = await readHead(apps);
+  const appsHtml = buildHtml(template, {
+    title: appsHead.title,
+    description: appsHead.description,
+    canonical: ORIGIN + APPS_ROUTE,
+    rootHtml: await apps.$eval("#root", (el) => el.innerHTML),
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: appsHead.title,
+      description: appsHead.description,
+      url: ORIGIN + APPS_ROUTE,
+      publisher: { "@type": "Organization", name: SITE_NAME, url: `${ORIGIN}/` },
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: listed.map((app, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: app.name,
+          url: ORIGIN + app.route,
+        })),
+      },
+    },
+  });
+  await writePage(APPS_ROUTE, appsHtml, appsHead.title);
+  await writePage(`${APPS_ROUTE}/`, appsHtml, appsHead.title);
+  await apps.close();
+
   // The blog index links to every article.
   const blog = await renderRoot(browser, base + BLOG_ROUTE, "#root main h1");
   const posts = await blog.$$eval('#root main a[href^="/blog/"]', (links) => [
@@ -261,7 +302,7 @@ try {
     await page.close();
   }
 
-  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([...STATIC_PAGES, ...routes, BLOG_ROUTE, ...posts]));
+  await writeFile(path.join(ROOT, "sitemap.xml"), buildSitemap([...STATIC_PAGES, APPS_ROUTE, ...routes, BLOG_ROUTE, ...posts]));
   console.log("wrote sitemap.xml");
 } finally {
   await browser.close();
