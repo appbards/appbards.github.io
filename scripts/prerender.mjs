@@ -27,7 +27,7 @@ const SITE_NAME = "App Bards";
 const HOME_ROUTE = "/";
 // Pages that are already static files; listed in the sitemap only.
 const STATIC_PAGES = ["/privacy-policy/"];
-// 404.html redirects unknown paths to index.html, which then renders that path.
+// Old /?/<path> links (from the former 404.html SPA redirect) still land on index.html.
 // This drops the prerendered home markup in that case so it never flashes.
 const HOME_ONLY_SCRIPT = `<script>if(location.pathname!=="/")document.getElementById("root").innerHTML=""</script>`;
 const BLOG_ROUTE = "/blog/";
