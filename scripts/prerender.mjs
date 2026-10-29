@@ -140,6 +140,7 @@ function buildSitemap(paths) {
 
 const template = (await readFile(path.join(ROOT, TEMPLATE), "utf8")).replace(/\r+\n/g, "\n");
 if (!template.includes(EMPTY_ROOT)) throw new Error(`${TEMPLATE}: could not find ${EMPTY_ROOT}`);
+const TEMPLATE_TITLE = template.match(/<title>([^<]*)<\/title>/)[1];
 
 const server = await startServer(template);
 const base = `http://127.0.0.1:${server.address().port}`;
@@ -166,12 +167,18 @@ try {
       .catch(() => firstParagraph);
     const rootHtml = await page.$eval("#root", (el) => el.innerHTML);
     const canonical = ORIGIN + route;
+    // An app page may set its own <title>, description and preview image.
+    const head = await readHead(page);
+    const ownHead = head.title !== TEMPLATE_TITLE;
+    const metaDescription = ownHead ? head.description : description;
 
     // Structured data is read from the rendered page: store badges, the icon,
     // optional data-category / data-free on <main> and an optional FAQ block.
     const app = await page.$eval("#root main", (main) => ({
       icon: main.querySelector("img").getAttribute("src"),
-      stores: [...main.querySelectorAll('a[href*="play.google.com"], a[href*="apps.apple.com"]')].map((a) => a.href),
+      stores: [
+        ...new Set([...main.querySelectorAll('a[href*="play.google.com"], a[href*="apps.apple.com"]')].map((a) => a.href)),
+      ],
       category: main.dataset.category,
       free: "free" in main.dataset,
       faq: [...main.querySelectorAll("[data-faq] h3")].map((h) => ({
@@ -179,18 +186,19 @@ try {
         answer: h.nextElementSibling.textContent.trim(),
       })),
     }));
-    const storeUrl = app.stores[0]?.split("&referrer=")[0];
+    const storeUrls = app.stores.map((s) => s.split("&referrer=")[0]);
     const jsonLd = [
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         name: title,
-        description,
+        description: metaDescription,
         url: canonical,
         image: ORIGIN + app.icon,
         operatingSystem: app.stores.map((s) => (s.includes("play.google.com") ? "Android" : "iOS")).join(", ") || undefined,
         applicationCategory: app.category,
-        installUrl: storeUrl,
+        installUrl: storeUrls[0],
+        sameAs: storeUrls.length > 0 ? storeUrls : undefined,
         offers: app.free ? { "@type": "Offer", price: "0", priceCurrency: "USD" } : undefined,
         publisher: { "@type": "Organization", name: SITE_NAME, url: `${ORIGIN}/` },
       },
@@ -208,10 +216,11 @@ try {
     }
 
     const html = buildHtml(template, {
-      title: `${title} - ${SITE_NAME}`,
-      description,
+      title: ownHead ? head.title : `${title} - ${SITE_NAME}`,
+      description: metaDescription,
       canonical,
       rootHtml,
+      image: ownHead ? head.image : undefined,
       jsonLd,
     });
 
@@ -235,11 +244,14 @@ try {
 
   // The apps index lists every app with a link to its page.
   const apps = await renderRoot(browser, base + APPS_ROUTE, "#root main h1");
+  // Each card links to its app twice (the name and the button); list every app once.
   const listed = await apps.$$eval('#root main a[href^="/apps/"]', (links) =>
-    links.map((a) => ({
-      route: a.getAttribute("href"),
-      name: a.closest("[id]").querySelector("h2").textContent.trim(),
-    })),
+    links
+      .map((a) => ({
+        route: a.getAttribute("href"),
+        name: a.closest("[id]").querySelector("h2").textContent.trim(),
+      }))
+      .filter((app, i, all) => all.findIndex((other) => other.route === app.route) === i),
   );
   const missing = routes.filter((route) => !listed.some((app) => app.route === route));
   if (missing.length > 0) throw new Error(`${APPS_ROUTE} does not link to ${missing.join(", ")}`);
