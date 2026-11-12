@@ -161,7 +161,8 @@ try {
     const slug = route.split("/").pop();
     const page = await renderRoot(browser, base + route, "#root main h1");
 
-    const title = await page.$eval("#root main h1", (el) => el.textContent.trim());
+    // The h1 may add words to the app name (e.g. "for Android"); data-name keeps the official name.
+    const title = await page.$eval("#root main h1", (el) => (el.dataset.name || el.textContent).trim());
     const firstParagraph = await page.$eval("#root main p", (el) => el.textContent.trim());
     const description = await home
       .$eval(`[id="${slug}"] h3 + p`, (el) => el.textContent.trim())
